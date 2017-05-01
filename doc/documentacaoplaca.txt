@@ -1,0 +1,5 @@
+https://github.com/itead/ITEADSW_GSM
+http://www.tuxti.com.br/arquivos/arduino/modulos/sim808/SIM808_manual.docx
+https://www.itead.cc/wiki/File:SIM800_Series_GNSS_Application_Note_V1.00.pdf
+http://www.tuxti.com.br/arquivos/arduino/modulos/sim808/SIM808_V3.1.rar
+

@@ -11,11 +11,12 @@
 //#include <TinyGps.h>   /* baixei essa, mas depois vi que tem essa ++ nova. Baixa e instala a mais nova no teu Energia */
 #include "TinyGPS++.h"
 #include <HardwareSerial.h>   /* nativa do Energia. Nem precisa dar include */
+**
 
 #define TELEFONE  "00000000000"
 
 /* Declaração de Variáveis/Objetos */
-TinyGPSPlus gps; // Inicia GPS  
+TinyGPSPlus gps; // Inicia GPS
 int dadoGPS; // Variável para armazenar dado instantâneo do GPS. encode irá processar a string completa e fazer o parse.
 String mensagem, respostaAT, telefone;
 int dadoInicial;

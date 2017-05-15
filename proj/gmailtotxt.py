@@ -2,6 +2,8 @@ import email
 import imaplib
 import ctypes
 import getpass
+import re
+import pynmea2
 
 mail = imaplib.IMAP4_SSL('imap.gmail.com',993)
 
@@ -16,7 +18,7 @@ def loop():
    mail.select("INBOX")
    (validation, messages) = mail.search(None, '(UNSEEN)')
    if validation == 'OK':
-     
+
       for num in messages[0].split() :
          print " "
          print " === New Email! === "
@@ -24,43 +26,52 @@ def loop():
          typ, data = mail.fetch(num,'(RFC822)')
          for response_part in data:
             if isinstance(response_part, tuple):
-                newmessage = email.message_from_string(response_part[1])               
+                newmessage = email.message_from_string(response_part[1])
                 print newmessage['From']
-                data = newmessage['Subject']                
+                data = newmessage['Subject']
                 print data
 
+                fromvalidation = re.search("lioc.boat.tracker@gmail.com", str(newmessage['From']))
+                if fromvalidation != None:
+                    for part in newmessage.walk():
+                        if part.get_content_type() == 'text/plain':
+                            print part.get_payload()
 
-                file = open("GPSLoggertxt","a")
+                            gprmcstr = str(part.get_payload()).split(' ', 1)[0]
 
-                file.write(str(newmessage['From']))
-                file.write("\n")
-                file.write(str(newmessage['Date']))                
-                file.write("\n")
-                file.write(str(data))                
-                file.write("\n")
+                            gpsinformation = pynmea2.parse(str(gprmcstr))
+                            gpsdatestamp = gpsinformation.datestamp
 
-                file.close()
+                            tracker_gpsdatestamp = str(newmessage['Subject']) + "_" + str(gpsdatestamp)
 
-                for part in newmessage.walk():
-                    if part.get_content_type() == 'text/plain':
-                        print part.get_payload()
-                        file = open("GPSLoggertxt","a")
-                        file.write(part.get_payload(None, True))
-                        file.write("\n")
-                        file.close()
-     
- 
-                if data == 'eject':                                                            
-                    ctypes.windll.WINMM.mciSendStringW(u"set cdaudio door open", None, 0, None)               
-                typ, data = mail.store(num,'+FLAGS','\\Seen')                                  
+                            file = open(tracker_gpsdatestamp,"a")
+                            print gpsinformation
+                            #file.write(str(newmessage['From']))
+                            #file.write("\n")
+                            #file.write(str(data))
+                            #file.write("\n")
+                            file.write(part.get_payload(None, True))
+                            file.write(str(gpsinformation))
+                            #file.write("\n")
+
+                            file.close()
+
+
+
+
+
+
+                if data == 'eject':
+                    ctypes.windll.WINMM.mciSendStringW(u"set cdaudio door open", None, 0, None)
+                typ, data = mail.store(num,'+FLAGS','\\Seen')
 
    print "..........................................................................................................Searching new emails..."
 
 if __name__ == '__main__':
-      try:        
+      try:
         while True:
             loop()
       finally:
-         print" " 
+         print" "
          print" Obrigado por usar Boat Tracker "
          print" "

@@ -40,19 +40,33 @@ def loop():
                             gprmcstr = str(part.get_payload()).split(' ', 1)[0]
 
                             gpsinformation = pynmea2.parse(str(gprmcstr))
+
+
                             gpsdatestamp = gpsinformation.datestamp
+                            gpstimestamp = gpsinformation.timestamp
+                            gpsstatus = gpsinformation.status
+                            gpslat = gpsinformation.lat
+                            gpslon = gpsinformation.lon
+                            gpsspeed = gpsinformation.spd_over_grnd
 
-                            tracker_gpsdatestamp = str(newmessage['Subject']) + "_" + str(gpsdatestamp)
+                            logtitle = str(newmessage['Subject']) + '_' + str(gpsdatestamp)
+                            
+                            logmessage = str(gpsdatestamp) + '_'\
+                            + str(gpstimestamp) + '_'\
+                            + str(gpsstatus) + '_'\
+                            + str(gpslat) + '_'\
+                            + str(gpslon) + '_'\
+                            + str(gpsspeed)
 
-                            file = open(tracker_gpsdatestamp,"a")
-                            print gpsinformation
+                            file = open(logtitle,"a")
+                            #print gpsinformation
                             #file.write(str(newmessage['From']))
                             #file.write("\n")
                             #file.write(str(data))
                             #file.write("\n")
-                            file.write(part.get_payload(None, True))
-                            file.write(str(gpsinformation))
-                            #file.write("\n")
+                            #file.write(part.get_payload(None, True))
+                            file.write(logmessage)
+                            file.write("\n")
 
                             file.close()
 

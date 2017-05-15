@@ -12,6 +12,7 @@ AAA
 //#include <TinyGps.h>   /* baixei essa, mas depois vi que tem essa ++ nova. Baixa e instala a mais nova no teu Energia */
 #include "TinyGPS++.h"
 #include <HardwareSerial.h>   /* nativa do Energia. Nem precisa dar include */
+**
 
 #define TELEFONE  "00000000000"
 
@@ -27,8 +28,13 @@ void goGPS(void);
 void comandoAT(String comando);
 void finalSMS(void);
 
-void setup()   /* essa rotina é executada apenas uma vez */
+void setup()   /* essa rotina é
+ executada apenas uma vez */
 {
+    TESTANDOCOMMIT
+    TESTANDOCOMITT
+    TESTANDOCOMMIT
+
     Serial.begin(9600);   /* abre a porta serial de comunicação entre o MSP432 e o PC. Será útil para enviar informações de debug ao Serial Monitor */
     Serial1.begin(9600);  /* abre a porta serial de comunicação entre o MSP432 e o Módulo GSM/GPS */
 

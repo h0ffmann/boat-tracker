@@ -7,6 +7,7 @@
 
 */
 
+AAA
 
 //#include <TinyGps.h>   /* baixei essa, mas depois vi que tem essa ++ nova. Baixa e instala a mais nova no teu Energia */
 #include "TinyGPS++.h"
@@ -14,6 +15,7 @@
 
 #define TELEFONE  "00000000000"
 
+LINHA SEM COMITAR
 /* Declaração de Variáveis/Objetos */
 TinyGPSPlus gps; // Inicia GPS
 int dadoGPS; // Variável para armazenar dado instantâneo do GPS. encode irá processar a string completa e fazer o parse.

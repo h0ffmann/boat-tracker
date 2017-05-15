@@ -50,12 +50,12 @@ def loop():
                             gpsspeed = gpsinformation.spd_over_grnd
 
                             logtitle = str(newmessage['Subject']) + '_' + str(gpsdatestamp)
-                            
-                            logmessage = str(gpsdatestamp) + '_'\
+
+                            logmessage = str(gpslat) + '_'\
+                            + str(gpslon) + '_'\
+                            + str(gpsdatestamp) + '_'\
                             + str(gpstimestamp) + '_'\
                             + str(gpsstatus) + '_'\
-                            + str(gpslat) + '_'\
-                            + str(gpslon) + '_'\
                             + str(gpsspeed)
 
                             file = open(logtitle,"a")

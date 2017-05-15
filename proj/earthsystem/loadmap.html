@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Boat Tracker</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 80%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+	<h5> Boat Tracker &#174 </h5>
+	<h6> Sistema de monitoramento Georreferenciado</h6>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+
+
+        /* Tem que testar. Abrir arquivo(N feito), pegar ultima linha(N feito), splittar _, definir latitude e longitude com typecast
+        var lastline
+        var arraymessage  = lastline.split("_");
+        var latitude = number(arraymessage[0])
+        var longitude = number(arraymessage[1])
+        */
+
+
+
+        var myposition = {lat: latitude, lng: longitude};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 18,
+          center: myposition
+        });
+        var marker = new google.maps.Marker({
+          position: myposition,
+          map: map
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=REMOVED&callback=initMap"
+    async defer></script>
+  </body>
+</html>

@@ -83,7 +83,8 @@ void go2G(void)
   comandoAT("AT+SAPBR=2,1");
 }
 
-void goEmail(void)
+void
+goEmail(void)
 {
   comandoAT("AT+EMAILCID=1");
   comandoAT("AT+EMAILTO=45");

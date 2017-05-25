@@ -7,7 +7,7 @@ void comandoAT(String comando)
   comando += "\r";
   Serial1.println(comando);
   respostaAT = "";
-  delay(500);
+  delay(1000);
   while(Serial1.available() > 0)    // aguardando dados da porta serial
   {
     char c = Serial1.read();

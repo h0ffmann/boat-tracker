@@ -10,16 +10,17 @@
 #include "auxiliares.h"
 
 /* Declaração de Variáveis/Objetos */
-TinyGPSPlus gps;         // Objeto GPS
+//TinyGPSPlus gps;         // Objeto GPS
 int dadoGPS;             // Variável para armazenar dado instantâneo do GPS
 String mensagem, telefone;
 int dadoInicial;
 
 void sendSMS(String mensagem);
 void goGPS(void);
-void go2G(void);    // setar APN da operadora
-void goEmail(void); // setar password localmente e verificar parâmetros
+void go2G(void);      // setar APN da operadora
+void goEmail(void);   // setar password localmente e verificar parâmetros
 void lerSerial(void); // testar
+void sendEmail(String);
 
 void setup()   /* Essa rotina é executada apenas uma vez */
 {
@@ -30,16 +31,17 @@ void setup()   /* Essa rotina é executada apenas uma vez */
     pinMode(BLUE_LED, OUTPUT);
 
     comandoAT("AT");                              // sim808, are you alive?
-    goGPS();                                      // ativa GPS (cold start)
+    //goGPS();                                      // ativa GPS (cold start)
     go2G();                                       // configura e ativa GPRS
+    goEmail();
+    sendEmail("MSP432");
 }
 
 void loop()   /* Loop principal do programa. Executado após o setup */
 {
   comandoAT("AT");
+  sendEmail("Mensagem de Teste - Sent by MSP432 - LIOc");
 
-  // comandoAT("AT+SMTPBODY");
-  // comandoAT("AT+SMTPSEND");
 }
 
 void sendSMS(String mensagem)
@@ -83,15 +85,23 @@ void go2G(void)
   comandoAT("AT+SAPBR=2,1");
 }
 
-void
-goEmail(void)
+void goEmail(void)
 {
   comandoAT("AT+EMAILCID=1");
   comandoAT("AT+EMAILTO=45");
-  comandoAT("AT+EMAILSSL=1");
+  comandoAT("AT+EMAILSSL=2");
   comandoAT("AT+SMTPSRV=\"smtp.gmail.com\",25");
-  comandoAT("AT+SMTPAUTH=1,\"lioc.boat.tracker@gmail.com\",\"COLOCAR SENHA AQUI\"");
+  comandoAT("AT+SMTPAUTH=1,\"lioc.boat.tracker@gmail.com\",\"REMOVED\"");
   comandoAT("AT+SMTPFROM=\"lioc.boat.tracker@gmail.com\",\"TRACKER01\"");
   comandoAT("AT+SMTPRCPT=0,0,\"lioc.boat.tracker@gmail.com\",\"Server\"");
+  comandoAT("AT+SMTPRCPT=1,0,\"william.macedo@poli.ufrj.br\",\"William\"");
   comandoAT("AT+SMTPSUB=\"BT01\"");
+}
+
+void sendEmail(String mensagem)
+{
+  comandoAT("AT+SMTPBODY=19");
+  comandoAT(mensagem);
+  ctrlZ();
+  comandoAT("AT+SMTPSEND");
 }

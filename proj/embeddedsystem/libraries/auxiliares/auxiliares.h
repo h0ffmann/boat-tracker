@@ -7,4 +7,4 @@
 void comandoAT(String comando);
 void ctrlZ(void);
 
-#endif 
+#endif AUXILIARES_H

@@ -5,18 +5,19 @@ void comandoAT(String comando)
   String respostaAT;
 
   comando += "\r";
-  Serial1.println(comando);
+  Serial1.print(comando);
   respostaAT = "";
   delay(1000);
   while(Serial1.available() > 0)    // aguardando dados da porta serial
   {
     char c = Serial1.read();
     respostaAT += c;                // lendo mensagem recebida. Concatena os chars em uma string
+    delay(10);
   }
 
-  if (respostaAT.length() >0)
+  if (respostaAT.length() > 0)
   {
-    Serial.print("Resposta ao Comando: ");
+    //Serial.print("Resposta ao Comando: ");
     Serial.println(respostaAT);
   }
 

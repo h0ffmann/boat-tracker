@@ -1,3 +1,4 @@
+
 /* DEL/POLI/UFRJ
    Projeto Integrado 2017.1
    Código Fonte - Sistema Embarcado
@@ -18,7 +19,6 @@ int dadoInicial;
 void sendSMS(String mensagem);
 void goGPS(void);
 void go2G(void);      // setar APN da operadora
-void goEmail(void);   // setar password localmente e verificar parâmetros
 void lerSerial(void); // testar
 void sendEmail(String);
 
@@ -29,19 +29,16 @@ void setup()   /* Essa rotina é executada apenas uma vez */
     pinMode(RED_LED, OUTPUT);
     pinMode(GREEN_LED, OUTPUT);
     pinMode(BLUE_LED, OUTPUT);
-
+    delay(100);
     comandoAT("AT");                              // sim808, are you alive?
     //goGPS();                                      // ativa GPS (cold start)
     go2G();                                       // configura e ativa GPRS
-    goEmail();
-    sendEmail("MSP432");
+    sendEmail("Mensagem de Teste - Sent by MSP432 - LIOc");
 }
 
 void loop()   /* Loop principal do programa. Executado após o setup */
 {
   comandoAT("AT");
-  sendEmail("Mensagem de Teste - Sent by MSP432 - LIOc");
-
 }
 
 void sendSMS(String mensagem)
@@ -85,7 +82,7 @@ void go2G(void)
   comandoAT("AT+SAPBR=2,1");
 }
 
-void goEmail(void)
+void sendEmail(String mensagem)
 {
   comandoAT("AT+EMAILCID=1");
   comandoAT("AT+EMAILTO=45");
@@ -96,11 +93,7 @@ void goEmail(void)
   comandoAT("AT+SMTPRCPT=0,0,\"lioc.boat.tracker@gmail.com\",\"Server\"");
   comandoAT("AT+SMTPRCPT=1,0,\"william.macedo@poli.ufrj.br\",\"William\"");
   comandoAT("AT+SMTPSUB=\"BT01\"");
-}
-
-void sendEmail(String mensagem)
-{
-  comandoAT("AT+SMTPBODY=19");
+  comandoAT("AT+SMTPBODY=41");
   comandoAT(mensagem);
   ctrlZ();
   comandoAT("AT+SMTPSEND");

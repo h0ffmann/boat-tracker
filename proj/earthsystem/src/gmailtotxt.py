@@ -51,18 +51,6 @@ def loop():
 
                             logtitle = str(newmessage['Subject']) + '_' + str(gpsdatestamp)
 
-							''' import re
-						def dm_to_sd(dm):
-    		
-    					Converts a geographic coordiante given in "degres/minutes" dddmm.mmmm
-    					format (ie, "12319.943281" = 123 degrees, 19.953281 minutes) to a signed
-    					decimal (python float) format
-    		
-    					# '12319.943281'
-    					if not dm or dm == '0':
-        				return 0.
-    					d, m = re.match(r'^(\d+)(\d\d\.\d+)$', dm).groups()
-						return float(d) + float(m) / 60 */ '''
 		
 
                             logmessage = str(gpslat) + '_'\

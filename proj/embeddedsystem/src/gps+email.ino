@@ -29,7 +29,7 @@ void setup()   /* Essa rotina é executada apenas uma vez */
     pinMode(RED_LED, OUTPUT);
     pinMode(GREEN_LED, OUTPUT);
     pinMode(BLUE_LED, OUTPUT);
-    delay(100);
+    delay(15000);         /* Delay para fixação da Rede GPRS (Nextel no LIOc - por volta de 15s */
     comandoAT("AT");                              // sim808, are you alive?
     sendData( "AT+CGPSPWR=1",1000,DEBUG);
     sendData( "AT+CGNSPWR=1",1000,DEBUG);

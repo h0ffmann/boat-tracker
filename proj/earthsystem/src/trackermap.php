@@ -62,7 +62,7 @@
 
     <!-- Layout da Página -->
     <div class="siimple-h1" >  Boat Tracker</div>
-    <div class="siimple-h3" >  Sistema de monitoramento Georeferenciado</div>
+    <div class="siimple-h3" >  Sistema de monitoramento Georreferenciado</div>
     <nav class="site-nav">
           <ul class="group">
             <li><a class="siimple-small" href="#">Home</a></li>

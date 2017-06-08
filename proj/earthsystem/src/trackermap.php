@@ -49,12 +49,15 @@
 
 		$valor_latitude = floatval ($pieces[0]);// passa as informações de longitude e latitude para float, que é o formato aceito
 		$valor_longitude = floatval ($pieces[1]);// pela API do Google Maps
-
-		#echo $pieces[0]; // apenas alguns prints para depurar erros.
-		#echo "\n";
-		#echo $pieces[1];
-
-
+		echo "\n";
+		echo $valor_latitude;
+		echo "\n";
+		echo $valor_longitude;
+		echo "\n";
+		echo $pieces[0]; 
+		echo "\n";
+		echo $pieces[1];
+		echo "\n";
 
 	?>
 

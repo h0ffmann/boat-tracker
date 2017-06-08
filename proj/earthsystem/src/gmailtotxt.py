@@ -1,4 +1,5 @@
-import email # Uso na lógica de carregar informações do email
+#coding: utf-8
+import email # Uso na lógica de carregar informações do email 
 import imaplib # Para usar IMAP, que é o protocolo de acesso ao email.
 import ctypes # Uso para adicionar flag de mensagem visto após a mesma ser armazenada
 import getpass # Para digitar senha sem mostrar caracteres
@@ -32,7 +33,7 @@ def loop(): # Loop que teoricamente deve rodar infinitamente enquanto o sistema 
                 data = newmessage['Subject']
                 print data
 
-                fromvalidation = re.search("lioc.boat.tracker@gmail.com", str(newmessage['From'])) # Validando usuário para validar mensagens que serão armazenadas
+                fromvalidation = re.search("lioc.boat.tracker@gmail.com", str(newmessage['From'])) # Validando usuário
                 if fromvalidation != None:
                     for part in newmessage.walk(): # Logica para "caminhar" sobre toda a informação do email e carregar o texto plano da mensagem
                         if part.get_content_type() == 'text/plain':
@@ -49,8 +50,8 @@ def loop(): # Loop que teoricamente deve rodar infinitamente enquanto o sistema 
                             gpsdatestamp = gpsinformation.datestamp # Data 
                             gpstimestamp = gpsinformation.timestamp # Tempo
                             gpsstatus = gpsinformation.status       # Status da validação da informação
-                            gpslat = gpsinformation.lat             # Latitude -- VERIFICAR FORMATO
-                            gpslon = gpsinformation.lon             # Longitude -- VERIFICAR FORMATO
+                            gpslat = gpsinformation.latitude             # Latitude -- VERIFICAR FORMATO
+                            gpslon = gpsinformation.longitude            # Longitude -- VERIFICAR FORMATO
                             gpsspeed = gpsinformation.spd_over_grnd # Velocidade em nós
 
 							#Lembrar de ver na codumentação função que converte representação, para ser aceita no mapa
@@ -59,12 +60,7 @@ def loop(): # Loop que teoricamente deve rodar infinitamente enquanto o sistema 
 
 
 							#Concatena todas as strings com a informação
-                            logmessage = str(gpslat) + '_'\ 
-                            + str(gpslon) + '_'\
-                            + str(gpsdatestamp) + '_'\
-                            + str(gpstimestamp) + '_'\
-                            + str(gpsstatus) + '_'\
-                            + str(gpsspeed)
+                            logmessage = str(gpslat)+'_'+str(gpslon)+'_'+str(gpsdatestamp)+'_'+str(gpstimestamp)+'_'+str(gpsstatus)+'_'+ str(gpsspeed)
 
 							#Logica para abertura, escrita e fechamento do logger
                             file = open(logtitle,"a") 

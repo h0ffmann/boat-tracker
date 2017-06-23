@@ -60,7 +60,7 @@ def loop(): # Loop que teoricamente deve rodar infinitamente enquanto o sistema 
 
 
 							#Concatena todas as strings com a informação
-                            logmessage = str(gpslat)+'_'+str(gpslon)+'_'+str(gpsdatestamp)+'_'+str(gpstimestamp)+'_'+str(gpsstatus)+'_'+ str(gpsspeed)
+                            logmessage = str(gpslat)+','+str(gpslon)+','+str(gpsdatestamp)+','+str(gpstimestamp)+','+str(gpsstatus)+','+ str(gpsspeed)
 
 							#Logica para abertura, escrita e fechamento do logger
                             file = open(logtitle,"a") 

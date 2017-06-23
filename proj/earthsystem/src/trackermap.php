@@ -45,7 +45,7 @@
     /* Logica que carrega as informações necessárias para interface no arquivo */
 		$data = file($latestfileBT01); // abre o arquivo definido na lógica anterior
 		$line = $data[count($data)-1]; // define a ultima linha do arquivo
-		$pieces = explode("_", $line); // splita todas as informações entre "_", que é um convenção adota no script que gera o logger
+		$pieces = explode(",", $line); // splita todas as informações entre "_", que é um convenção adota no script que gera o logger
 
 		$valor_latitude = floatval ($pieces[0]);// passa as informações de longitude e latitude para float, que é o formato aceito
 		$valor_longitude = floatval ($pieces[1]);// pela API do Google Maps

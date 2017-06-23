@@ -106,26 +106,37 @@ Luiz \textsc{Felipe}% Supervisor's Name
 
 
 \begin{abstract}
-O projeto Boat Tracker consiste n'uma plataforma de posicionamento georreferenciado para embarcações marítimas.
+O projeto Boat Tracker consiste n'uma plataforma de monitoramento de posição para embarcações marítimas pequenas.
 A plataforma é composta por dois sistemas: Embarcado e de Terra.
 O sistema embarcado é composto por um microcontrolador, produzido pela Texas Instruments, MSP432 atuando sobre um sensor GPS - \textit{Sistema de Posicionamento Global} -
 e um módulo GSM - \textit{Sistema Global para Comunicações Móveis}.
 O sistema de Terra recebe as mensagens do sistema embarcado, via e-mail, com as coordenadas geográficas e a situação da embarcação e armazena em um \textit{Data Logger}.
 No final, o sistema de Terra agirá como Host Server e disponibilizará um endereço Web
 em que os usuários podem fazer requisição do último dado armazenado e então a página exibe um mapa com essas coordenadas e a situação da embarcação.
+< Outras funcionalidades: Rota de ultimas posições, botão emergência, ponto inicial e final>
 
 \section{Motivação}
-\hspace{10} A principal motivação do desenvolvimento deste projeto é a necessidade do monitoramento da posição das embarcações ao longo de competições de pequeno porte.
-Um problema recorrente no ambiente competitivo marítmo é que tanto os espectadores quanto as equipes em terra não conseguem avaliar sem ajuda de instrumentos de medição o ranqueamento das embarcações atual,
-dado o local de largada e a chegada do evento. A primeira competição em vista para aplicação do projeto é _____.
+\hspace{10} A principal motivação do desenvolvimento deste projeto é a necessidade do monitoramento de embarcações ao longo de competições de pequeno porte.
+Um problema recorrente no ambiente competitivo marítmo é que tanto os espectadores quanto as equipes em terra não conseguem avaliar sem ajuda de instrumentos de medição o ranqueamento das embarcações no momento atual do evento. A primeira aplicação para o projeto tem como inspiração o projeto da Federação Brasiliense de Vela Adaptada, oferecendo às pessoas com deficiência a possibilidade de praticar um esporte, resgatar a autoestima e melhorar a qualidade de vida. A idéia é trazer esse projeto para o Rio de Janeiro e usar o protótipo do projeto.
 
 \section{Introdução}
-\hspace{10} 
+\hspace{10} O projeto começa no módulo GPS, ele capta as informações de longitude e latitude no presente momento bem como data, hora e velocidade absoluta. Cabe ao microcontrolador MSP432 guardar essa informação e enviar o mais rápido possível via e-mail usando o módulo GSM. A partir disso o sistema de terra possui um script em Python que verifica indefinidamente a existência de novos e-mails na caixa de entrada, valida de acordo com o remetente e armazena a informação em um Data Logger diário. Por fim a interface web, via PHP, seleciona dentre os arquivos de logs diários no servidor o último modificado, portanto o dia atual recente e carrega a última aquisição desse dia do tracker para a API do Google Maps.
 
-\section{Desenvolvimento}
+\section{Escolha de projeto}
 \hspace{10}
 
 \section{Precificação e Futuras melhorias}
+
+Módulo GPS/GSM SIM808 - 
+
+MSP432 - 
+
+Alimentação -
+
+Conversor DC/DC - 
+
+Caixa Patola -
+
 \label{sec:examples}
 
 \subsection{Sections}

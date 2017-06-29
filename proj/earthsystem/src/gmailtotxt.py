@@ -1,5 +1,5 @@
 #coding: utf-8
-import email # Uso na lógica de carregar informações do email 
+import email # Uso na lógica de carregar informações do email
 import imaplib # Para usar IMAP, que é o protocolo de acesso ao email.
 import ctypes # Uso para adicionar flag de mensagem visto após a mesma ser armazenada
 import getpass # Para digitar senha sem mostrar caracteres
@@ -43,11 +43,12 @@ def loop(): # Loop que teoricamente deve rodar infinitamente enquanto o sistema 
                             # IMPORTANTE! Deve ter formato $GPRMC<content> <addicional info>
                             # Se não a função de parse da string vai encerrar o loop.
                             gprmcstr = str(part.get_payload()).split(' ', 1)[0]
+                            #statustripu = str(part.get_payload()).split(' ', 1)[1]
 
                             gpsinformation = pynmea2.parse(str(gprmcstr))
 
 
-                            gpsdatestamp = gpsinformation.datestamp # Data 
+                            gpsdatestamp = gpsinformation.datestamp # Data
                             gpstimestamp = gpsinformation.timestamp # Tempo
                             gpsstatus = gpsinformation.status       # Status da validação da informação
                             gpslat = gpsinformation.latitude             # Latitude -- VERIFICAR FORMATO
@@ -60,10 +61,10 @@ def loop(): # Loop que teoricamente deve rodar infinitamente enquanto o sistema 
 
 
 							#Concatena todas as strings com a informação
-                            logmessage = str(gpslat)+','+str(gpslon)+','+str(gpsdatestamp)+','+str(gpstimestamp)+','+str(gpsstatus)+','+ str(gpsspeed)
+                            logmessage = str(gpslat)+','+str(gpslon)+','+str(gpsdatestamp)+','+str(gpstimestamp)+','+str(gpsstatus)+','+ str(gpsspeed) # sstatustripu
 
 							#Logica para abertura, escrita e fechamento do logger
-                            file = open(logtitle,"a") 
+                            file = open(logtitle,"a")
                             #print gpsinformation
                             #file.write(str(newmessage['From']))
                             #file.write("\n")

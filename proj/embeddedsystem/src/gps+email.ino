@@ -9,11 +9,13 @@
 */
 #include "auxiliares.h"
 #define DEBUG true
+#define EMERGENCIA 10
 
 /* Declaração de Variáveis/Objetos */
 //TinyGPSPlus gps;         // Objeto GPS
 char gprmc[100];
 String mensagem, telefone;
+int status;
 
 void sendSMS(String mensagem);
 void goGPS(void);
@@ -29,8 +31,10 @@ void setup()   /* Essa rotina é executada apenas uma vez */
     pinMode(RED_LED, OUTPUT);
     pinMode(GREEN_LED, OUTPUT);
     pinMode(BLUE_LED, OUTPUT);
-    delay(15000);         /* Delay para fixação da Rede GPRS (Nextel no LIOc - por volta de 15s */
+    status = pinMode(EMERGENCIA, INPUT);
+    digitalRead(EMERGENCIA);
     comandoAT("AT");                              // sim808, are you alive?
+    delay(10000);         /* Delay para fixação da Rede GPRS (Nextel no LIOc - por volta de 15s */
     sendData( "AT+CGPSPWR=1",1000,DEBUG);
     sendData( "AT+CGNSPWR=1",1000,DEBUG);
     sendData( "AT+CGPSOUT=255",1000,DEBUG);
@@ -45,11 +49,16 @@ void setup()   /* Essa rotina é executada apenas uma vez */
 
 void loop()   /* Loop principal do programa. Executado após o setup */
 {
+  go2G();                                       // configura e ativa GPRS
   sendData( "AT+CGPSPWR=1",1000,DEBUG);
   sendData( "AT+CGPSOUT=255",1000,DEBUG);
   sendData( "AT+CGNSTST=1",1000,DEBUG);
+  status = digitalRead(EMERGENCIA);
+  char(status);
   sendData( "",1000,DEBUG);
   sendData( "",1000,DEBUG);
+  gprmc += '\n';
+  gprmc += status;
   sendEmail(gprmc);
 }
 

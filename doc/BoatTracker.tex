@@ -37,11 +37,11 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage[T1]{fontenc}
 
 \begin{document}
 
 \begin{titlepage}
-
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
 \center % Center everything on the page
@@ -50,7 +50,8 @@
 %   HEADING SECTIONS
 %----------------------------------------------------------------------------------------
 
-\textsc{\LARGE Escola Politécnica da Universidade Federal do Rio de Janeiro}\\[1.5cm] % Name of your university/college
+\textsc{\LARGE Universidade Federal do Rio de Janeiro}\\[1.5cm] % Name of your university/college
+\textsc{\LARGE Escola Politécnica }\\[1.5cm] % Name of your university/college
 \textsc{\Large Departamento de Engenharia Eletrônica e de Computação}\\[0.5cm] % Major heading such as course name
 \textsc{\large Projeto Integrado 2017.1}\\[0.5cm] % Minor heading such as course title
 
@@ -77,8 +78,12 @@ William \textsc{Macedo}% Your name
 \begin{minipage}{0.4\textwidth}
 \begin{flushright} \large
 \emph{Supervisores:} \\
-Fábio \textsc{Nascimento}
-Luiz \textsc{Felipe}% Supervisor's Name
+Fábio \textsc{Nascimento\\}
+Luiz Felipe \textsc{Moraes\\(LIOc/COPPE/UFRJ)\\}
+% Supervisor's Name
+Carlos J. R. \textsc{D'ávila\\}
+Joarez B. \textsc{Monteiro\\}
+(DEL/POLI/UFRJ)% Supervisor's Name
 \end{flushright}
 \end{minipage}\\[2cm]
 
@@ -114,83 +119,56 @@ O sistema de Terra recebe as mensagens do sistema embarcado, via e-mail, com as 
 No final, o sistema de Terra agirá como Host Server e disponibilizará um endereço Web
 em que os usuários podem fazer requisição do último dado armazenado e então a página exibe um mapa com essas coordenadas e a situação da embarcação.
 < Outras funcionalidades: Rota de ultimas posições, botão emergência, ponto inicial e final>
+\end{abstract}
 
 \section{Motivação}
-\hspace{10} A principal motivação do desenvolvimento deste projeto é a necessidade do monitoramento de embarcações ao longo de competições de pequeno porte.
-Um problema recorrente no ambiente competitivo marítmo é que tanto os espectadores quanto as equipes em terra não conseguem avaliar sem ajuda de instrumentos de medição o ranqueamento das embarcações no momento atual do evento. A primeira aplicação para o projeto tem como inspiração o projeto da Federação Brasiliense de Vela Adaptada, oferecendo às pessoas com deficiência a possibilidade de praticar um esporte, resgatar a autoestima e melhorar a qualidade de vida. A idéia é trazer esse projeto para o Rio de Janeiro e usar o protótipo do projeto.
+\hspace{0.5cm} A principal motivação do desenvolvimento deste projeto é a necessidade do monitoramento de embarcações ao longo de competições de pequeno porte.
+Um problema recorrente no ambiente competitivo marítmo é que tanto os espectadores quanto as equipes em terra não conseguem avaliar, sem ajuda de instrumentos de medição, o ranqueamento das embarcações no momento atual do evento. A primeira aplicação para o projeto tem como inspiração o projeto da Federação Brasiliense de Vela Adaptada, oferecendo às pessoas com deficiência a possibilidade de praticar um esporte, resgatar a autoestima e melhorar a qualidade de vida. A idéia é trazer esse projeto para o Rio de Janeiro e usar o protótipo do projeto. O Laboratório de Instrumentação Oceanográfica da COPPE/UFRJ é apoiador deste projeto, e também dá suporte para a realização deste projeto integrado. Seus autores são bolsistas de iniciação científica do referido laboratório.
 
 \section{Introdução}
-\hspace{10} O projeto começa no módulo GPS, ele capta as informações de longitude e latitude no presente momento bem como data, hora e velocidade absoluta. Cabe ao microcontrolador MSP432 guardar essa informação e enviar o mais rápido possível via e-mail usando o módulo GSM. A partir disso o sistema de terra possui um script em Python que verifica indefinidamente a existência de novos e-mails na caixa de entrada, valida de acordo com o remetente e armazena a informação em um Data Logger diário. Por fim a interface web, via PHP, seleciona dentre os arquivos de logs diários no servidor o último modificado, portanto o dia atual recente e carrega a última aquisição desse dia do tracker para a API do Google Maps.
+\hspace{0.5cm} O projeto começa no módulo GPS, ele capta as informações de longitude e latitude no presente momento bem como data, hora e velocidade absoluta. Cabe ao microcontrolador MSP432 guardar essa informação e enviar o mais rápido possível via e-mail usando o módulo GSM. A partir disso o sistema de terra possui um script em Python que verifica indefinidamente a existência de novos e-mails na caixa de entrada, valida de acordo com o remetente e armazena a informação em um Data Logger diário. Por fim a interface web, via PHP, seleciona dentre os arquivos de logs diários no servidor o último modificado, portanto o dia atual recente e carrega a última aquisição desse dia do tracker para a API do Google Maps.
 
-\section{Escolha de projeto}
-\hspace{10}
-
-\section{Precificação e Futuras melhorias}
-
-Módulo GPS/GSM SIM808 - 
-
-MSP432 - 
-
-Alimentação -
-
-Conversor DC/DC - 
-
-Caixa Patola -
-
-\label{sec:examples}
-
-\subsection{Sections}
-
-Use section and subsection commands to organize your document. \LaTeX{} handles all the formatting and numbering automatically. Use ref and label commands for cross-references.
-
-\subsection{Comments}
-
-Comments can be added to the margins of the document using the \todo{Here's a comment in the margin!} todo command, as shown in the example on the right. You can also add inline comments too:
-
-\todo[inline, color=green!40]{This is an inline comment.}
-
-\subsection{Tables and Figures}
-
-Use the table and tabular commands for basic tables --- see Table~\ref{tab:widgets}, for example. You can upload a figure (JPEG, PNG or PDF) using the files menu. To include it in your document, use the includegraphics command as in the code for Figure~\ref{fig:frog} below.
-
-% Commands to include a figure:
-\begin{figure}
-\centering
-\includegraphics[width=0.5\textwidth]{frog.jpg}
-\caption{\label{fig:frog}This is a figure caption.}
-\end{figure}
-
-\begin{table}
-\centering
-\begin{tabular}{l|r}
-Item & Quantity \\\hline
-Widgets & 42 \\
-Gadgets & 13
-\end{tabular}
-\caption{\label{tab:widgets}An example table.}
-\end{table}
-
-\subsection{Mathematics}
-
-\LaTeX{} is great at typesetting mathematics. Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
-$$S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
-      = \frac{1}{n}\sum_{i}^{n} X_i$$
-denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
-
-\subsection{Lists}
-
-You can make lists with automatic numbering \dots
-
-\begin{enumerate}
-\item Like this,
-\item and like this.
-\end{enumerate}
-\dots or bullet points \dots
+\section{Precificação}
 \begin{itemize}
-\item Like this,
-\item and like this.
+\item Módulo GPS/GSM SIM808 - R\$155,00
+\end{itemize}
+\begin{itemize}
+\item Microcontrolador Texas Instruments Launchpad MSP432P401R - R\$ 45,00
+\end{itemize}
+\begin{itemize}
+\item Alimentação Elétrica + Cabeamento - R\$30,00
+\end{itemize}
+\begin{itemize}
+\item Caixa Patola - R\$ 20,00
 \end{itemize}
 
-We hope you find write\LaTeX\ useful, and please let us know if you have any feedback using the help menu above.
+Total: R\$250,00
+Observação: Todo o projeto foi custeado pelo LIOc/COPPE/UFRJ
+
+\section{Sistema Embarcado - Detalhamento}
+
+\hspace{0.5cm} O Sistema embarcado é composto por duas partes (placas) principais. A primeira é o módulo que contém o chip SIM808. Este chip integra diversas de função de comunicações móveis (2G - GPRS/GSM), geolocalização (GPS/GNSS) e comunicações locais (Bluetooth). Para a nossa aplicação, utilizaremos suas funções de comunicação móvel e geolocalização. Sua escolha foi motivada após pesquisa de diversos chips, que aliassem os seguintes fatores: baixo custo, facilidade de programação, documentação vasta e rápido tempo de aquisição (compra em território nacional). A segunda parte é a placa controladora, o cérebro do sistema, o microcontrolador MSP432P401R, fabricado pela renomada Texas Instruments. Sua escolha foi motivada principalmente pelo uso constante dos microcontroladores da família MSP430/MSP432 pelos alunos desenvolvedores e pesquisadores do LIOc. Suas principais características são: extremo baixo consumo, disponibilidade de interfaces de comunicação (SPI/I2C/UART) e programação em C. Diversas outras características fazem o LIOc ter adotado tal placa como referência em diversos de seus projetos e de seus integrantes (projetos finais de graduação e dissertações de mestrado), porém não são do escopo deste projeto integrado.
+
+A placa controladora se comunica com o módulo através do protocolo serial UART (assíncrono), e utilizando do protocolo AT, de comunicações móveis. São enviados comandos básicos, como: ligue o seu módulo GPRS, ligue o seu módulo GPS e transmita informação de GPS para sua saída. A string com a localização GPS é obtida pelo microcontrolador, que "parsea" esta informação, e envia de volta para o módulo, solicitando que um e-mail seja enviado para o servidor (sistema web). 
+
+O consumo médio deste módulo é de 100mA, com picos de 250mA nas transmissões para a ERB da rede celular. 
+O consumo da placa controladora reside na faixa de 5mA, porém com otimizações, este valor pode cair para a região das centenas de microAmperes.
+
+\section{Sistema de Terra - Detalhamento}
+
+\hspace{0.5cm} O Sistema de terra foi concebido em um Notebook Asus, com processador Intel i5. Neste notebook foi instalado um Servidor (Apache). Um código em python é responsável por checar o e-mail para o qual o sistema embarcado envia as informações de geolocalização. A cada novo e-mail que é detectado pelo sistema, este programa recebe a string GPRMC (um dos padrões internacionais para informação de geolocalização - via satélite), e as parsea novamente, para obter os valores finais de longitude e latitude. Exemplo de String GPRMC: \\ \\ \$GPRMC,153421.000,A,2251.6658,S,04313.7370,W,0.01,120.76,030717,,,A*6F \\
+
+Esta string aponta para o corredor do Centro de Tecnologia da UFRJ. Dado obtido ás 12:34 - UTC-3 (15:34 - UTC) do dia 03/07/2017. No momento da aquisição, o autor estava almoçando em um dos trailers do CT. Para rápida visualização, copie e cole a string no site: https://rl.se/gprmc
+
+Após a obtenção destes valores, um arquivo de LOG é criado para registrar esta ocorrência de rastreamento. Um programa em PHP, que roda no servidor Apache, também recebe estes valores, e , com auxílio de uma API fornecida pelo Google Maps, plota essas informações em um Mapa, onde podemos visualizar claramente a posição do sistema embarcado, no momento da aquisição.
+
+\subsection{Qualidade das Medidas e Observações}
+\hspace{0.5cm} Para medidas em ceú aberto, foram realizados ensaios (inclusive com chuva), que nos resultaram em localizações com exatidão inferior a 2m. Ao adentrar em ambiente fechado (salas e auditórios), a precisão e exatidão das medidas vão se reduzindo, até que o sinal dos satélites é perdido completamente (inerente da baixa potência que chega à superfície da terra, advinda da órbita terrestre). O Sinal de GPRS varia conforme a operadora utilizada. Em todos os nossos testes utilizamos a rede da operadora NEXTEL. Considerando a baixa qualidade média de sinal celular em toda a Ilha do Fundão, onde o sistema foi testado, consideramos que o nosso objetivo foi alcançado com sucesso.
+
+\section{Projetos Futuros}
+\hspace{0.5cm} Como citado anteriormente, este projeto integrado é o início de um projeto em andamento do LIOc/COPPE/UFRJ. Há um planejamento para continuação do desenvolvimento para aplicação em uma competição que deve ocorrer no final deste ano (2017). As principais melhorias a serem feitas são: Aprimoramento do encapsulamento, cabeamento e alimentação. Redução máxima do consumo do sistema, otimização de todos os códigos, com processos mais eficientes, redução do tempo de atualização da localização (atualmente na região de 40 segundos, com bom sinal de 2G) e redução de custos. Também há a possibilidade da mudança da forma como o dado navega pela rede de internet (atualmente - E-mail/Google). Uma das possibilidades é a montagem de um servidor FTP, reduzindo o caminho até a máquina de destino.
+
+\section{Agradecimentos}
+\hspace{0.5cm} Agradecemos imensamente aos Professores Carlos José Ribas D'ávila (Casé) e Joarez Bastos Monteiro pela ministração desta disciplina, a qual consideramos uma das mais importantes do curso de Engenharia Eletrônica e de Computação da UFRJ. Agradecemos também aos Engenheiros Fábio Nascimento pela concepção da ideia e motivação, e Luiz Felipe Moraes por toda a ajuda técnica com sua experiência na área de sistemas embarcados.\\\\Contatos:\\William Barbosa de Macedo -   william.macedo@poli.ufrj.br\\Matheus Hoffmann Fernandes Santos - hoffmann@poli.ufrj.br
 
 \end{document}

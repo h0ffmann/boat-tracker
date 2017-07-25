@@ -1,15 +1,18 @@
 #coding: utf-8
 import email # Uso na lógica de carregar informações do email
 import imaplib # Para usar IMAP, que é o protocolo de acesso ao email.
-import ctypes # Uso para adicionar flag de mensagem visto após a mesma ser armazenada
-import getpass # Para digitar senha sem mostrar caracteres
 import re # Para manipulação de strings
 import pynmea2 # Biblioteca para parsear o código NMEA e armazenar separadamente as informações, por _,  e identificadas
+
+def encrypt_decrypt(password):
+    enc_str = 'XXXXXXXXXXXXXX'
+    return "".join([chr(ord(a) ^ ord(b)) for a,b
+                        in zip(password,enc_str)])
 
 mail = imaplib.IMAP4_SSL('imap.gmail.com',993) # Definicao do protocolo e porta
 
 unm = 'lioc.boat.tracker@gmail.com' # Usuario
-pwd = getpass.getpass("Enter the password:") # Senha
+pwd = encrypt_decrypt('REMOVED') # Senha
 
 mail.login(unm,pwd) # Função para logar no email.
 
@@ -42,8 +45,10 @@ def loop(): # Loop que teoricamente deve rodar infinitamente enquanto o sistema 
                             # Seleciona somente o primeiro conteúdo até  primeiro espaço
                             # IMPORTANTE! Deve ter formato $GPRMC<content> <addicional info>
                             # Se não a função de parse da string vai encerrar o loop.
-                            gprmcstr = str(part.get_payload()).split(' ', 1)[0]
-                            #statustripu = str(part.get_payload()).split(' ', 1)[1]
+                            gprmcstr = str(part.get_payload()).split('*', 1)[0]
+                            # statustripu = str(part.get_payload()).split(' ', 1)[1]
+                            if (gprmcstr[-1:] == '\n'):
+                                gprmcstr = gprmcstr.split('\r', 1)[0]
 
                             gpsinformation = pynmea2.parse(str(gprmcstr))
 
@@ -80,13 +85,11 @@ def loop(): # Loop que teoricamente deve rodar infinitamente enquanto o sistema 
 
 
 
-				# Adicionando flag "seen" à mensagem para garantir que só seja logada uma vez.
-                if data == 'eject':
-                    ctypes.windll.WINMM.mciSendStringW(u"set cdaudio door open", None, 0, None)
-                typ, data = mail.store(num,'+FLAGS','\\Seen')
+				
+                typ, data = mail.store(num,'+FLAGS','\\Seen')# Adicionando flag "seen" à mensagem para garantir que só seja logada uma vez.
 
    print "..........................................................................................................Searching new emails..."
-
+  
 #Definição da main com chamada do loop
 if __name__ == '__main__':
       try:

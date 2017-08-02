@@ -38,6 +38,37 @@
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{color}
+
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+ 
+\lstset{
+  language=C,                
+  basicstyle=\footnotesize,           
+  numbers=left,                   
+  numberstyle=\tiny\color{gray},  
+  stepnumber=2,                             
+  numbersep=5pt,                  
+  backgroundcolor=\color{white},    
+  showspaces=false,               
+  showstringspaces=false,         
+  showtabs=false,                 
+  frame=single,                   
+  rulecolor=\color{black},        
+  tabsize=2,                      
+  captionpos=b,                   
+  breaklines=true,                
+  breakatwhitespace=false,        
+  title=\lstname,                               
+  keywordstyle=\color{blue},          
+  commentstyle=\color{dkgreen},       
+  stringstyle=\color{mauve},     
+}
+
 
 \begin{document}
 
@@ -145,14 +176,198 @@ Um problema recorrente no ambiente competitivo marítmo é que tanto os espectad
 Total: R\$250,00
 Observação: Todo o projeto foi custeado pelo LIOc/COPPE/UFRJ
 
-\section{Sistema Embarcado - Detalhamento}
+\section{Sistema Embarcado}
 
+\subsection{Descrição do Funcionamento}
 \hspace{0.5cm} O Sistema embarcado é composto por duas partes (placas) principais. A primeira é o módulo que contém o chip SIM808. Este chip integra diversas de função de comunicações móveis (2G - GPRS/GSM), geolocalização (GPS/GNSS) e comunicações locais (Bluetooth). Para a nossa aplicação, utilizaremos suas funções de comunicação móvel e geolocalização. Sua escolha foi motivada após pesquisa de diversos chips, que aliassem os seguintes fatores: baixo custo, facilidade de programação, documentação vasta e rápido tempo de aquisição (compra em território nacional). A segunda parte é a placa controladora, o cérebro do sistema, o microcontrolador MSP432P401R, fabricado pela renomada Texas Instruments. Sua escolha foi motivada principalmente pelo uso constante dos microcontroladores da família MSP430/MSP432 pelos alunos desenvolvedores e pesquisadores do LIOc. Suas principais características são: extremo baixo consumo, disponibilidade de interfaces de comunicação (SPI/I2C/UART) e programação em C. Diversas outras características fazem o LIOc ter adotado tal placa como referência em diversos de seus projetos e de seus integrantes (projetos finais de graduação e dissertações de mestrado), porém não são do escopo deste projeto integrado.
 
 A placa controladora se comunica com o módulo através do protocolo serial UART (assíncrono), e utilizando do protocolo AT, de comunicações móveis. São enviados comandos básicos, como: ligue o seu módulo GPRS, ligue o seu módulo GPS e transmita informação de GPS para sua saída. A string com a localização GPS é obtida pelo microcontrolador, que "parsea" esta informação, e envia de volta para o módulo, solicitando que um e-mail seja enviado para o servidor (sistema web). 
 
 O consumo médio deste módulo é de 100mA, com picos de 250mA nas transmissões para a ERB da rede celular. 
 O consumo da placa controladora reside na faixa de 5mA, porém com otimizações, este valor pode cair para a região das centenas de microAmperes.
+
+\subsection{Plataforma de Desenvolvimento}
+\hspace{0.5cm} Para a realização da codificação do microcontrolador, utilizou-se a IDE (Integrated Development Enviroment) Energia. Esta IDE é baseada na IDE nativa do Arduino. O principal motivo pelo qual se optou pela Energia foi a possibilidade de programação em mais alto nível, em comparação com a linguagem C ANSI. No Energia, utiliza-se uma linguagem muito similar a C++, permitindo que operações como transmissão e recepção UART e parsing de strings GPS fossem realizados com mais facilidade. Dessa forma, menos tempo foi desprendido em programação de baixo nível. Segue o código principal abaixo:
+
+
+
+\begin{verbatim}
+
+/* DEL/POLI/UFRJ
+   Projeto Integrado 2017.1
+   Código Fonte - Sistema Embarcado
+   Autores:
+   William Barbosa de Macedo - william.macedo@poli.ufrj.br
+   Matheus Hoffmann Fernandes Santos - hoffmann@poli.ufrj.br
+
+*/
+#include "auxiliares.h"
+#define DEBUG true
+#define EMERGENCIA 10
+
+/* Declaração de Variáveis/Objetos */
+//TinyGPSPlus gps;         // Objeto GPS
+char gprmc[100];
+String mensagem, telefone;
+int status;
+
+void sendSMS(String mensagem);
+void goGPS(void);
+void go2G(void);      // setar APN da operadora
+void lerSerial(void); // testar
+void sendEmail(String);
+void sendData(String, const int, boolean);
+
+void setup()   /* Essa rotina é executada apenas uma vez */
+{
+    Serial.begin(9600);   /* abre a porta serial de comunicação entre 
+o MSP432 e o PC. Será útil para enviar informações de debug ao Serial Monitor */
+    Serial1.begin(9600);  /* abre a porta serial de comunicação entre 
+o MSP432 e o Módulo GSM/GPS */
+    pinMode(RED_LED, OUTPUT);
+    pinMode(GREEN_LED, OUTPUT);
+    pinMode(BLUE_LED, OUTPUT);
+    status = pinMode(EMERGENCIA, INPUT);
+    digitalRead(EMERGENCIA);
+    comandoAT("AT");                              // sim808, are you alive?
+    delay(10000);         /* Delay para fixação da Rede GPRS 
+(Nextel no LIOc - por volta de 15s */
+    sendData( "AT+CGPSPWR=1",1000,DEBUG);
+    sendData( "AT+CGNSPWR=1",1000,DEBUG);
+    sendData( "AT+CGPSOUT=255",1000,DEBUG);
+    sendData( "AT+CGNSTST=1",1000,DEBUG);
+    sendData( "",1000,DEBUG);
+    sendData( "",1000,DEBUG);
+    sendData( "",1000,DEBUG);
+    //sendData( "AT+CGPSPWR=0",1000,DEBUG);
+    go2G();                                       // configura e ativa GPRS
+    sendEmail(gprmc);
+}
+
+void loop()   /* Loop principal do programa. Executado após o setup */
+{
+  go2G();                                       // configura e ativa GPRS
+  sendData( "AT+CGPSPWR=1",1000,DEBUG);
+  sendData( "AT+CGPSOUT=255",1000,DEBUG);
+  sendData( "AT+CGNSTST=1",1000,DEBUG);
+  status = digitalRead(EMERGENCIA);
+  char(status);
+  sendData( "",1000,DEBUG);
+  sendData( "",1000,DEBUG);
+  gprmc += '\n';
+  gprmc += status;
+  sendEmail(gprmc);
+}
+
+void sendSMS(String mensagem)
+{
+    comandoAT("AT+CMGF=1");
+    comandoAT("AT+CMGS=\"00000000000\"");
+    Serial1.print(mensagem);
+    delay(500);
+    ctrlZ();
+}
+
+void lerSerial(void)
+{
+  String respostaAT;
+
+  respostaAT = "";
+  while(Serial1.available() > 0) // aguarda recebimento de mensagem de 
+//confirmacao. Quando for -1, indica que não há mais dados a serem processados.
+  {
+    char c = Serial1.read();
+    respostaAT += c; // le mensagem recebida. 
+// Concatena os chars em uma string. Typecast pq read retorna int.
+  }
+
+  if (respostaAT.length() >0)
+  {
+    Serial.print("Leitura Serial: ");
+    Serial.println(respostaAT);
+  }
+}
+
+void goGPS(void)
+{
+  comandoAT("AT+CGNSPWR=1");
+  comandoAT("AT+CGNSTST=1");
+}
+
+void go2G(void)
+{
+  comandoAT("AT+SAPBR=3,1,\"Contype\",\"GPRS\"");   
+// APN ou Contype
+  comandoAT("AT+SAPBR=3,1,\"APN\",\"modem.nextel3g.net.br\"");  
+ // atencao: trocar APN para sua respectiva operadora
+  comandoAT("AT+SAPBR=1,1");
+  comandoAT("AT+SAPBR=2,1");
+}
+
+void sendEmail(String mensagem)
+{
+  comandoAT("AT+EMAILCID=1");
+  comandoAT("AT+EMAILTO=45");
+  comandoAT("AT+EMAILSSL=2");
+  comandoAT("AT+SMTPSRV=\"smtp.gmail.com\",25");
+  comandoAT("AT+SMTPAUTH=1,\"lioc.boat.tracker@gmail.com\",\"REMOVED\"");
+  comandoAT("AT+SMTPFROM=\"lioc.boat.tracker@gmail.com\",\"TRACKER01\"");
+  comandoAT("AT+SMTPRCPT=0,0,\"lioc.boat.tracker@gmail.com\",\"Server\"");
+  comandoAT("AT+SMTPRCPT=1,0,\"william.macedo@poli.ufrj.br\",\"William\"");
+  comandoAT("AT+SMTPSUB=\"BT01\"");
+  comandoAT("AT+SMTPBODY=70");
+  comandoAT(mensagem);
+  ctrlZ();
+  comandoAT("AT+SMTPSEND");
+  delay(15000);
+}
+
+void sendData(String command, const int timeout, boolean debug){
+    String response = "";
+
+    Serial1.println(command);
+    delay(150);
+    if(debug){
+    long int time = millis();
+    while( (time+timeout) > millis()){
+      while(Serial1.available()){
+        response += char(Serial1.read());
+      }
+    }
+//      Serial.println("\nInicio da Resposta");
+//      Serial.print(response);
+//      Serial.println("\nFim da Resposta");
+    int index=0, indice=0;
+      index = response.indexOf("$GPRMC",0);  // if(index != -1)
+      if(index >=0)
+      {
+        time = millis();
+        do
+        {
+          gprmc[indice] = response[index];
+          indice++;
+          index++;
+          if(indice==95)
+            break;
+        }
+        while((response[index] != '$') && ((time+timeout) > millis()));
+
+        //gprmc[indice] = '\0';
+        Serial.println("\Inicio do GPRMC:");
+        Serial.print(gprmc);
+        Serial.println("Fim do GPRMC\n");
+      }
+    }
+}
+
+\end{verbatim}
+
+\subsection{Principais dificuldades}
+\hspace{0.5cm} Houve bastante dificuldade para realizar o recebimento de forma adequada da string proveniente do módulo GPS. Isso se dá ao fato de que o buffer do MSP432 é de apenas 32 bytes. De início, a codificação não estava adequada, e os bytes subsequentes ao trigésimo segundo eram perdidos. O código atual resolve este problema. Também houveram desafios no que tange ao envio do e-mail. O servidor SMTP do Google, que realiza os Log-Ins e permite o acesso ao endereço de e-mail, apenas responde a conexões que estejam protegidas pelo protocolo de segurança SSL. Para enviar uma mensagem com este protocolo, se fez necessário atualização do Firmware do módulo GPRS, através de uma conexão serial com o Notebook. Outra questão observada foi o fato de que, após ligado, o módulo
+GPS envia dados ininterruptamente ao microcontrolador, dos mais diversos tipos de formatos NMEA (GPRMC, GPGGA etc). Entretanto, apenas o protocolo GPRMC era de fato, o interesse de ser adquirido. Para tal, se fez necessário a detecção assíncrona dos caracteres de identificação do protocolo e dos caracteres iniciais "G; P; R; M e C" conforme o buffer tinha o seu preenchimento. 
+
+\subsection{Entendimento do Sistema - Desenvolvedor}
+\hspace{0.5cm} Os códigos do sistema embarcado estão armazenados no repositório oficial do Boat Tracker: https://github.com/Hoffmannxd/BoatTracker. Todos os arquivos estão documentados e comentados. A maioria das funções utilizadas são auto-explicativas e seguem as recomendações dos desenvolvedores do módulo GPS/GPRS. Os comandos AT são utilizados,em sua maioria, na sequência que é exemplificada no manual do módulo (SIM808), para cada procedimento (enviar e-mail, ligar GPRS etc). Dúvidas que não forem sanadas ao ler os comentários, ou ao ler os arquivos de orientação do módulo SIM808 (disponíveis na Internet), podem ser sanadas contatando william.macedo@poli.ufrj.br.
 
 \section{Sistema de Terra - Detalhamento}
 

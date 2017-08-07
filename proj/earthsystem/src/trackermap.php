@@ -135,11 +135,12 @@
     <div class="siimple-h3" >  Sistema de monitoramento de geolocalização de pequenas embarcações</div>
     <nav class="site-nav">
           <ul class="group">
-            <li><a class="siimple-small" href="#">Home</a></li>
-            <li><a class="siimple-small" href="http://hoffmann/trackermap.php">Onde estou?</a></li>
+            <li><a class="siimple-small" href="http://hoffmann/home.php">Home</a></li>
+            <li><a class="siimple-small" href="http://hoffmann/trackermap.php">Posição atual</a></li>
             <li><a class="siimple-small" href="<?php echo $latestfileBT01 ?>">Último Log</a></li>
-            <li><a class="siimple-small" href="#">Sobre nós</a></li>
-            <li><a class="siimple-small" href="#">Contato</a></li>
+            <li><a class="siimple-small" href="http://hoffmann/trackermap10.php">Últimas dez posições</a></li>
+            <li><a class="siimple-small" href="http://hoffmann/trackermap20.php">Últimas vinte posições</a></li>
+            <li><a class="siimple-small" href="http://hoffmann/about.php">Sobre nós</a></li>
           </ul>
         </nav>
 
@@ -241,19 +242,9 @@
           map: map
         });
 
-         var inicio = new google.maps.Marker({
-          position: killowatts,
-          map: map,
-          label: 'I'
-        });
-
-         var termino = new google.maps.Marker({
-          position: correios,
-          map: map,
-          label: 'F'
-        });
+*/
       }
-      */
+
     </script>
     <!-- Callback function para garantir que a api carregue só quando tiver passado pela lógica PHP -->
     <script src="https://maps.googleapis.com/maps/api/js?key=REMOVED&callback=initMap"

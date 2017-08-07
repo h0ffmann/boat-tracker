@@ -126,7 +126,7 @@ Joarez B. \textsc{Monteiro\\}
 %   DATE SECTION
 %----------------------------------------------------------------------------------------
 
-{ Maio de 2017}\\[2cm] % Date, change the \today to a set date if you want to be precise
+{ Agosto de 2017}\\[2cm] % Date, change the \today to a set date if you want to be precise
 
 %----------------------------------------------------------------------------------------
 %   LOGO SECTION
@@ -185,6 +185,14 @@ A placa controladora se comunica com o módulo através do protocolo serial UART
 
 O consumo médio deste módulo é de 100mA, com picos de 250mA nas transmissões para a ERB da rede celular. 
 O consumo da placa controladora reside na faixa de 5mA, porém com otimizações, este valor pode cair para a região das centenas de microAmperes.
+
+\begin{figure}[h]
+\caption{Diagrama de Funcionamento do Sistema Embarcado}
+
+\centering % para centralizarmos a figura
+\includegraphics[width=12cm]{Diagrama_Funcionamento_Sist_Emb.png} % leia abaixo
+\label{figura:qualquernome}
+\end{figure}
 
 \subsection{Plataforma de Desenvolvimento}
 \hspace{0.5cm} Para a realização da codificação do microcontrolador, utilizou-se a IDE (Integrated Development Enviroment) Energia. Esta IDE é baseada na IDE nativa do Arduino. O principal motivo pelo qual se optou pela Energia foi a possibilidade de programação em mais alto nível, em comparação com a linguagem C ANSI. No Energia, utiliza-se uma linguagem muito similar a C++, permitindo que operações como transmissão e recepção UART e parsing de strings GPS fossem realizados com mais facilidade. Dessa forma, menos tempo foi desprendido em programação de baixo nível. Segue o código principal abaixo:

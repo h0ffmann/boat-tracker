@@ -273,7 +273,7 @@
 
     </script>
     <!-- Callback function para garantir que a api carregue só quando tiver passado pela lógica PHP -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=REMOVED&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo htmlspecialchars(getenv("GOOGLE_MAPS_KEY") ?: "", ENT_QUOTES) ?>&callback=initMap"
     async defer></script>
   </body>
   <?php

@@ -43,7 +43,7 @@
 | see the logs of the tests in 2017 | [`proj/earthsystem/logs/`](proj/earthsystem/logs/) |
 | do the checks | [tests](#tests) |
 
-## how it works
+## how it worked (2017)
 
 [![The tracker on the boat sends each GPS position by e-mail. A script on land reads the e-mails and writes a log. A web page shows the last position on a map.](doc/Diagrama_Funcionamento_Sist_Emb.png)](doc/Diagrama_Funcionamento_Sist_Emb.png)
 
